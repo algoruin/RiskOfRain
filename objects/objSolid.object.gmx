@@ -3,7 +3,7 @@
   <spriteName>sprSolidMask</spriteName>
   <solid>-1</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-100</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>sprSolidMask</maskName>
@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>image_speed = 0;
 image_index = 0;
-checkTiles(x, y);
+checkTiles();
 </string>
           </argument>
         </arguments>

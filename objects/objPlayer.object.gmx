@@ -29,6 +29,8 @@
 jmpSpd = 8;
 image_speed = 0.05;
 instance_create(x, y, objView);
+skill = false;
+skillsurf = surface_create(1, 1);
 </string>
           </argument>
         </arguments>
@@ -52,11 +54,21 @@ instance_create(x, y, objView);
           <argument>
             <kind>1</kind>
             <string>// Moving left and right
-if(keyboard_check(ord("D")) &amp;&amp; place_free(x + spd, y) &amp;&amp; !keyboard_check(ord("Q")))
+if(!skill)
 {
-    if(place_free(x, y + 1))
+    if(keyboard_check(ord("D")) &amp;&amp; place_free(x + spd, y) &amp;&amp; !keyboard_check(ord("Q")))
     {
-        if(place_free(x + spd, y + vspeed))
+        if(place_free(x, y + 1))
+        {
+            if(place_free(x + spd, y + vspeed))
+            {
+                sprite_index = sprPlayerRun;
+                image_speed = 0.4;
+                image_xscale = 1;
+                x += spd;
+            }
+        }
+        else
         {
             sprite_index = sprPlayerRun;
             image_speed = 0.4;
@@ -64,19 +76,19 @@ if(keyboard_check(ord("D")) &amp;&amp; place_free(x + spd, y) &amp;&amp; !keyboa
             x += spd;
         }
     }
-    else
+    else if(keyboard_check(ord("Q")) &amp;&amp; place_free(x - spd, y) &amp;&amp; !keyboard_check(ord("D")))
     {
-        sprite_index = sprPlayerRun;
-        image_speed = 0.4;
-        image_xscale = 1;
-        x += spd;
-    }
-}
-else if(keyboard_check(ord("Q")) &amp;&amp; place_free(x - spd, y) &amp;&amp; !keyboard_check(ord("D")))
-{
-    if(place_free(x, y + 1))
-    {
-        if(place_free(x - spd, y + vspeed))
+        if(place_free(x, y + 1))
+        {
+            if(place_free(x - spd, y + vspeed))
+            {
+                sprite_index = sprPlayerRun;
+                image_speed = 0.4;
+                image_xscale = -1;
+                x -= spd;
+            }
+        }
+        else
         {
             sprite_index = sprPlayerRun;
             image_speed = 0.4;
@@ -86,16 +98,9 @@ else if(keyboard_check(ord("Q")) &amp;&amp; place_free(x - spd, y) &amp;&amp; !k
     }
     else
     {
-        sprite_index = sprPlayerRun;
-        image_speed = 0.4;
-        image_xscale = -1;
-        x -= spd;
+        sprite_index = sprPlayer;
+        image_speed = 0.05;
     }
-}
-else
-{
-    sprite_index = sprPlayer;
-    image_speed = 0.05;
 }
 
 // Jumping
@@ -113,14 +118,45 @@ if(place_free(x, y + spd))
 else
 {
     gravity = 0;
-    if(keyboard_check_pressed(vk_space))
+    if(keyboard_check_pressed(vk_space) &amp;&amp; !skill)
     {
         sprite_index = sprPlayerJump;
         image_speed = 0;
         image_index = 0;
         vspeed = -jmpSpd;
     }
+    if(keyboard_check_pressed(ord("1")))
+    {
+        sprite_index = sprPlayerSkill0;
+        image_speed = 0.2;
+        image_index = 0;
+        skill0();
+    }
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="objSmallSolid">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>move_contact_solid(direction, -1);
+vspeed = 0;
 </string>
           </argument>
         </arguments>
@@ -146,6 +182,32 @@ else
             <string>// Collision with Block
 move_contact_solid(direction, -1);
 vspeed = 0;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="7">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>if(skill)
+{
+    skill = false;
+}
 </string>
           </argument>
         </arguments>
